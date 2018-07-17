@@ -774,12 +774,14 @@ declare function app:display-body($node as node(), $model as map(*), $paths as x
     let $data-display := app:display-nodes($node, $model, $paths)
     let $pdf := 
         if($rec//tei:idno[@type="PDF"] and $rec//tei:revisionDesc[@status="PDF"]) then
+            let $url :=  $rec//tei:idno[@type="PDF"][1]
             let $url := 
-                replace($rec//tei:idno[@type="PDF"]//text(),
-                    $global:base-uri,'https://github.com/Beth-Mardutho/hugoye-data/raw/master/'
-                )
-            return
-            <embed src="https://drive.google.com/viewerng/viewer?embedded=true&amp;url={$url}" width="100%" height="800"/>
+                if(starts-with($url,$global:base-uri)) then
+                    replace($url,$global:base-uri,'https://github.com/Beth-Mardutho/hugoye-data/raw/master/')
+                else if(starts-with($url,'https://github.com/')) then
+                    replace($url,'blob','raw')
+                else $url
+            return <embed src="https://drive.google.com/viewerng/viewer?embedded=true&amp;url={$url}" width="100%" height="800"/>
         else ()
     return 
         if($model("data")/descendant::tei:body/descendant::*[@n] or (app:toc($model("data")/descendant::tei:body/child::*) != '')) then 
@@ -897,7 +899,7 @@ return
  : TOC for Syriac Corpus records. 
 :)  
 declare function app:toggle-text-display($node as node(), $model as map(*)){
-if($model("data")/descendant::tei:body/descendant::*[@n][not(@type='section') and not(@type='part')]) then     
+if($model("data")/descendant::tei:body/descendant::tei:pb) then     
         <div class="panel panel-default">
             <div class="panel-heading"><a href="#" data-toggle="collapse" data-target="#toggleText">Show  </a>
             <span class="glyphicon glyphicon-question-sign text-info moreInfo" aria-hidden="true" data-toggle="tooltip" 
