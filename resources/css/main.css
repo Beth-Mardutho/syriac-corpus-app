@@ -798,6 +798,7 @@ pre {
       overflow:visible;
   }
   .tooltip-inner {
+    max-width: 275px;
     padding:.25em;
     padding-left:1.5em;
     overflow:visible;
