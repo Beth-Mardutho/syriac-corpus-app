@@ -94,7 +94,7 @@ declare function browse:group-volumes($node as node(), $model as map(*), $collec
                      order by $sort
                      return  
                         <div class="indent" style="border-bottom:1px dotted #eee; padding:1em" type="{$type}" issue="{string($article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="issue"]/@n)}" volume="{$article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]}">{tei2html:summary-view(root($article), '', $id)}</div>
-            else 'No drafts available'
+            else <div>No drafts available</div>
         else if($volumeNum != '') then 
             let $hits := $model("browse-data")
             return     
@@ -128,25 +128,52 @@ declare function browse:group-author($node as node(), $model as map(*), $collect
     return
         map {"group-by-author" :=     
                 if(request:get-parameter('alpha-filter', '') = 'ALL' or request:get-parameter('alpha-filter', '') = '') then
-                    for $article in $hits
-                    for $author in $article/descendant::tei:titleStmt/descendant::tei:author/tei:name
-                    let $label := if($author/tei:surname/text()) then concat($author/tei:surname/text(),', ',$author/tei:forename/text()) else $author
-                    group by $author-facet := $label
-                    order by $author-facet
-                    return 
-                        <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em;">
-                            <a class="togglelink text-info" 
-                            data-toggle="collapse" data-target="#show{replace($author-facet,'\s|\.|, ','')}" 
-                                                                  href="#show{replace($author-facet,'\s|\.|, ','')}" data-text-swap=" - {$author-facet}"> + {$author-facet} </a>&#160; 
-                            <div class="indent collapse" style="background-color:#F7F7F9;" id="show{replace($author-facet,'\s|\.|, ','')}">{
-                            for $a in $article
-                            let $date := $a/descendant::tei:publicationStmt/tei:date
-                            let $id := replace($a/descendant::tei:idno[@type='URI'][1],'/tei','')
-                            order by $date descending
-                            return 
-                                <div class="indent" style="border-bottom:1px dotted #eee; padding:1em">{tei2html:summary-view(root($a), '', $id)}</div>
-                            }</div>
-                        </div>
+                      for $author in $hits/descendant::tei:titleStmt/descendant::tei:author/tei:name
+                      let $label := if($author/tei:surname/text()) then concat($author/tei:surname/text(),', ',$author/tei:forename/text()) else $author
+                      group by $author-facet := $label
+                      order by $author-facet
+                      return 
+                            <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em;">
+                                <a class="togglelink text-info" data-toggle="collapse" data-target="#show{replace($author-facet,'\s|\.|, ','')}" href="#show{replace($author-facet,'\s|\.|, ','')}" data-text-swap=" - {$author-facet}"> + {$author-facet} </a>&#160;
+                                <div class="indent collapse" style="background-color:#F7F7F9;" id="show{replace($author-facet,'\s|\.|, ','')}">
+                                { 
+                                for $a in $author
+                                let $root := root($a)
+                                let $date := $root/descendant::tei:publicationStmt/tei:date
+                                let $id := $root/descendant::tei:idno[@type='URI'][1]
+                                group by $article-facet := $id
+                                order by $date[1] descending
+                                return 
+                                    <div class="indent" style="border-bottom:1px dotted #eee; padding:1em">{tei2html:summary-view($root, '', $article-facet)}</div>
+                                (:
+                                    for $a in root($author)
+                                    let $date := $a/descendant::tei:publicationStmt/tei:date
+                                    let $id := $a/descendant::tei:idno[@type='URI'][1]
+                                    group by $a-facet := $id
+                                    order by $date descending
+                                    return $a-facet
+                                    :)    
+                                        (:
+                                        <div class="indent" style="border-bottom:1px dotted #eee; padding:1em">{tei2html:summary-view(root($a), '', $author-facet)}</div>
+                                        :)
+                                }
+                                </div>
+                            </div>
+    (:
+                            <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em;">
+                                <a class="togglelink text-info" data-toggle="collapse" data-target="#show{replace($author-facet,'\s|\.|, ','')}" href="#show{replace($author-facet,'\s|\.|, ','')}" data-text-swap=" - {$author-facet}"> + {$author-facet} </a>&#160; 
+                                <div class="indent collapse" style="background-color:#F7F7F9;" id="show{replace($author-facet,'\s|\.|, ','')}">{
+                                for $a in $article
+                                let $date := $a/descendant::tei:publicationStmt/tei:date
+                                let $id := replace($a/descendant::tei:idno[@type='URI'][1],'/tei','')
+                                order by $date descending
+                                return 
+                                    <div class="indent" style="border-bottom:1px dotted #eee; padding:1em">{tei2html:summary-view(root($a), '', $id)}</div>
+                                }</div>
+                                </div>
+                            </div> 
+                    :)                            
+                            
                   else 
                     for $article in $hits
                     for $author in $article/descendant::tei:titleStmt/descendant::tei:author/tei:name[matches(substring(global:build-sort-string(tei:surname,$data:computed-lang),1,1),data:get-alpha-filter(),'i')]
