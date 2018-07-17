@@ -812,7 +812,7 @@ declare function app:display-ids($node as node(), $model as map(*)){
                 <span class="h5-inline">Status: 
             </span>
                 <span>{functx:capitalize-first(functx:camel-case-to-words(string($model("data")/descendant::tei:revisionDesc/@status),' '))}</span>
-              &#160;<a href="{$global:nav-base}/documentation/wiki.html?wiki-page=/Status-of-Texts-in-the-Digital-Syriac-Corpus&amp;wiki-uri=https://github.com/srophe/syriac-corpus/wiki"><span class="glyphicon glyphicon-question-sign text-info moreInfo"></span></a>
+              &#160;<a href="{$global:nav-base}/documentation/wiki.html?wiki-page=/Status-of-Contents-in-Hugoye&amp;wiki-uri=https://github.com/Beth-Mardutho/hugoye-data/wiki"><span class="glyphicon glyphicon-question-sign text-info moreInfo"></span></a>
               </div>,
               <div style="margin-top:1em;">
                 <span class="h5-inline">Publication Date: </span>
@@ -1143,6 +1143,6 @@ declare %templates:wrap function app:peer-review($node as node(), $model as map(
     let $type := substring-before(substring-after($model("data")//tei:idno[@type='URI'][1],concat($global:base-uri,'/')),'/')
     return
         if($global:get-config//repo:article-type[@type = $type][@peer-reviewed='yes']) then
-            <span class="badge access-pills"><a href="#" style="color:#555">peer reviewed <i class="fas fa-check"></i></a></span>
+            <span class="badge access-pills"><a href="{$global:nav-base}/documentation/wiki.html?wiki-page=/Peer-Review-Policy&amp;wiki-uri=https://github.com/Beth-Mardutho/hugoye-data/wiki" style="color:#555">peer reviewed <i class="fas fa-check"></i></a></span>
         else ()
 };
