@@ -313,6 +313,7 @@ td {
 .section.type ul {padding-left:0;}
 
 /* Browse page styles */
+.volumes-list { column-count: 3; column-gap: 40px; column-width: 300px; margin-bottom:1.5em;}
 .syr-list{padding-right:7em; padding-top:2em; text-align: right;}
 .en-list{padding-left:5em; padding-top:2em;}
 
@@ -862,6 +863,12 @@ tei-text
 .text-number.display {display:inline;}
 
 /* Table of Contents */
+.left-menu { 
+    position: fixed;
+    width:inherit;
+    top:125px;
+    z-index: 125;
+}
 .toc {display:block; margin-left:.75em;}
 .toc-item {display:block; font-size: small; padding:.5em; border-bottom:1px dotted #ccc;}
 .toc-item:last-child {border-bottom:none;}
@@ -991,6 +998,7 @@ div.toggle-buttons .toggle-label {font-size: 1em; font-weight:600}
 
 /* Small screens */
 @media screen and (max-width: 768px) {
+    .left-menu { position: relative;}
     .navbar-collapse, .dropdown-menu {float:none; width:100% !important;}
     .navbar-nav li {width:100% !important; float:none;}
     .mobile-submenu {

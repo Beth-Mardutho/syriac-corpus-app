@@ -111,12 +111,12 @@ declare function browse:group-volumes($node as node(), $model as map(*), $collec
             return     
                      for $article in $hits
                      let $vol := $article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"][1]
+                     let $date := $article/descendant::tei:publicationStmt/tei:date
                      group by $vol-facet := $vol
-                     let $label := concat('Volume ',$vol-facet/text())
+                     let $label := concat('Volume ',$vol-facet/text(), ' (',$date[1],')')
                      let $sort := if($vol-facet castable as xs:integer) then xs:integer($vol-facet) else 0
                      order by $sort descending
                      return 
-
                         <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em;">
                             <a href="{concat($global:nav-base,'/volume/', $vol-facet)}"> {$label} </a>&#160; 
                         </div> 
@@ -255,15 +255,17 @@ declare function browse:browse-volumes($node as node(), $model as map(*), $colle
                         <div class="articles">
                         {
                           for $a in $issue
-                          let $type := string($a/@type)
+                          let $type := if(string($a/@type) != '') then string($a/@type) else 'undefined'  
                           group by $type-facet := $type
-                          let $type-config := $global:get-config//repo:article-type[matches(@type,$type-facet)]
+                          let $type-config := if($global:get-config//repo:article-type[matches(@type,$type-facet)]) then $global:get-config//repo:article-type[contains(@type,$type-facet)] else () 
                           let $type-order := string($type-config[1]/@order)
                           let $sort := if($type-order castable as xs:integer) then xs:integer($type-order) else 100
                           order by $sort
                           return 
                             <div>
-                                <h3>{string($type-config[1]/@label)}</h3>
+                                {if($global:get-config//repo:article-type[matches(@type,$type-facet)]) then 
+                                   <h3>{string($type-config[1]/@label)}</h3>
+                                else ()}
                                 {$a}
                             </div>
                         }
@@ -273,7 +275,7 @@ declare function browse:browse-volumes($node as node(), $model as map(*), $colle
              </div> 
         else 
             <div xmlns="http://www.w3.org/1999/xhtml" class="results-panel">
-                <div class="indent">{                     
+                <div class="indent volumes-list">{                     
                 for $data in $hits
                 return $data 
                 }
