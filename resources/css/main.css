@@ -840,7 +840,12 @@ pre {
 .tei-milestone.chapter.display {display:block; height:1em; width:100%; border:bottom:1px solid #eee;}
 .tei-milestone.verse.display {display:block;}
 .tei-lg.display, .tei-lb.display {display:block; margin-bottom:1.25em;}
-tei-text
+.tei-graphic img {width:100%; overflow:auto;}
+.tei-caption {display:block; margin:1em;}
+.center {text-align:center;}
+.bold {font-weight:bold;}
+.italic {font-style:italic;}
+
 /*.tei-p {text-align: justify; text-justify: inter-word;}*/
 .tei-cite {display:block; margin:1em; padding:1em; border-left:1px soldi #eee;}
 .tei-quote {display:block; margin:1em; padding:1em;}
