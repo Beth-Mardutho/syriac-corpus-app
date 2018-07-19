@@ -83,7 +83,7 @@
         <!-- Hugoye specific configuration -->
         <!-- Article type order on volume pages multiple types maybe grouped together, see bookReview example -->
         <article-display-order>
-            <article-type type="introduction" label="Introductions" peer-reviewed="no" order="1"/>
+            <article-type type="introduction" label="Introduction" peer-reviewed="no" order="1"/>
             <article-type type="obituary" label="In Memoriam" peer-reviewed="no" order="2"/>
             <article-type type="article" label="Articles" peer-reviewed="yes" order="3"/>
             <article-type type="shortArticle" label="Short Articles" peer-reviewed="no" order="4"/>
