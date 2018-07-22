@@ -88,24 +88,26 @@ declare function browse:group-volumes($node as node(), $model as map(*), $collec
                 return     
                      for $article in $hits[descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"] = $volume]
                      let $id :=  $article/descendant::tei:idno[@type='URI'][1]
+                     let $date := $article/descendant::tei:publicationStmt/tei:date
                      let $type := string($article/descendant::tei:text/@type)
                      let $n :=  if($article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="order"]) then string($article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="order"]/@n) else string($article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="pp"]/@from)
                      let $sort := if($n castable as xs:integer) then xs:integer($n) else 0
                      order by $sort
                      return  
-                        <div class="indent" style="border-bottom:1px dotted #eee; padding:1em" type="{$type}" issue="{string($article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="issue"]/@n)}" volume="{$article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]}">{tei2html:summary-view(root($article), '', $id)}</div>
+                        <div class="indent" style="border-bottom:1px dotted #eee; padding:1em" date="{$date}" type="{$type}" issue="{string($article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="issue"]/@n)}" volume="{$article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]}">{tei2html:summary-view(root($article), '', $id)}</div>
             else <div>No drafts available</div>
         else if($volumeNum != '') then 
             let $hits := $model("browse-data")
             return     
                      for $article in $hits[descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"] = $volumeNum]
                      let $id :=  $article/descendant::tei:idno[@type='URI'][1]
+                     let $date := $article/descendant::tei:publicationStmt/tei:date
                      let $type := string($article/descendant::tei:text/@type)
                      let $n :=  if($article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="order"]) then string($article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="order"]/@n) else string($article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="pp"]/@from)
                      let $sort := if($n castable as xs:integer) then xs:integer($n) else 0
                      order by $sort
                      return  
-                        <div class="indent" style="border-bottom:1px dotted #eee; padding:1em" type="{$type}" issue="{string($article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="issue"]/@n)}" volume="{$volumeNum}">{tei2html:summary-view(root($article), '', $id)}</div> 
+                        <div class="indent" style="border-bottom:1px dotted #eee; padding:1em" date="{$date}" type="{$type}" issue="{string($article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="issue"]/@n)}" volume="{$volumeNum}">{tei2html:summary-view(root($article), '', $id)}</div> 
         else 
             let $hits := $model("browse-data")
             return     
@@ -145,34 +147,9 @@ declare function browse:group-author($node as node(), $model as map(*), $collect
                                 order by $date[1] descending
                                 return 
                                     <div class="indent" style="border-bottom:1px dotted #eee; padding:1em">{tei2html:summary-view($root, '', $article-facet)}</div>
-                                (:
-                                    for $a in root($author)
-                                    let $date := $a/descendant::tei:publicationStmt/tei:date
-                                    let $id := $a/descendant::tei:idno[@type='URI'][1]
-                                    group by $a-facet := $id
-                                    order by $date descending
-                                    return $a-facet
-                                    :)    
-                                        (:
-                                        <div class="indent" style="border-bottom:1px dotted #eee; padding:1em">{tei2html:summary-view(root($a), '', $author-facet)}</div>
-                                        :)
                                 }
                                 </div>
-                            </div>
-    (:
-                            <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em;">
-                                <a class="togglelink text-info" data-toggle="collapse" data-target="#show{replace($author-facet,'\s|\.|, ','')}" href="#show{replace($author-facet,'\s|\.|, ','')}" data-text-swap=" - {$author-facet}"> + {$author-facet} </a>&#160; 
-                                <div class="indent collapse" style="background-color:#F7F7F9;" id="show{replace($author-facet,'\s|\.|, ','')}">{
-                                for $a in $article
-                                let $date := $a/descendant::tei:publicationStmt/tei:date
-                                let $id := replace($a/descendant::tei:idno[@type='URI'][1],'/tei','')
-                                order by $date descending
-                                return 
-                                    <div class="indent" style="border-bottom:1px dotted #eee; padding:1em">{tei2html:summary-view(root($a), '', $id)}</div>
-                                }</div>
-                                </div>
-                            </div> 
-                    :)                            
+                            </div>                            
                             
                   else 
                     for $article in $hits
@@ -271,7 +248,7 @@ declare function browse:browse-volumes($node as node(), $model as map(*), $colle
     return
         if(count($volumes) = 1) then
             <div xmlns="http://www.w3.org/1999/xhtml" class="results-panel">
-                <h1>Volume {string($hits[1]/@volume)}</h1>        
+                <h1>Volume {string($hits[1]/@volume)} {if($hits[1]/@date != '') then concat(' (',$hits[1]/@date,')') else ()}</h1>        
                 {
                   for $issue in $hits 
                   group by $issue-num := $issue/@issue
