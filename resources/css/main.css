@@ -468,8 +468,8 @@ td {
 :lang(syr),:lang(syc) {
  font-family: "EstrangeloEdessa", "Estrangelo Edessa", Verdana, Arial, Helvetica, sans-serif;
   /*font-size:large;*/
-  font-size:24px; 
-  line-height:24px;
+  font-size:20px; 
+  line-height:20px;
   text-align: right;
   font-style: normal !important;
 }
