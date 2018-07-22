@@ -41,11 +41,11 @@ declare %templates:wrap function search:get-results($node as node(), $model as m
     let $keyword-query := common:query()
     let $eval-string :=  concat(search:query-string($collection),facet:facet-filter(facet-defs:facet-definition($collection)))
     return map {"hits" := 
-                if(exists(request:get-parameter-names()) or ($view = 'all')) then 
+                 if(exists(request:get-parameter-names()) or ($view = 'all')) then 
                     if($search:sort-element != '' and $search:sort-element != 'relevance' or $view = 'all') then 
                         for $hit in util:eval($eval-string)
-                        order by global:build-sort-string(page:add-sort-options($hit,$search:sort-element),'') ascending
-                        return $hit   
+                        order by page:add-sort-options($hit,$search:sort-element) ascending
+                        return $hit
                     else if(request:get-parameter('rel', '') != '' and ($search:sort-element = '' or not(exists($search:sort-element)))) then 
                         for $hit in util:eval($eval-string)
                         let $part := xs:integer($hit/child::*/tei:listRelation/tei:relation[@passive[matches(.,request:get-parameter('child-rec', ''))]]/tei:desc[1]/tei:label[@type='order'][1]/@n)
@@ -53,9 +53,6 @@ declare %templates:wrap function search:get-results($node as node(), $model as m
                         return $hit                                                                                               
                     else 
                         for $hit in util:eval($eval-string)
-                       (: let $expanded := util:expand($hit, "expand-xincludes=no")
-                        let $headword := count($expanded/descendant::*[contains(@syriaca-tags,'#syriaca-headword')][descendant::*:match])
-                        let $headword := if($headword gt 0) then $headword + 15 else 0:)
                         order by ft:score($hit) + (count($hit/descendant::tei:bibl) div 100) descending
                         return $hit
                 else ()                        
@@ -79,7 +76,7 @@ if($collection != '') then
        concat("collection('",$global:data-root,"/",$collection,"')//tei:body",search:dynamic-paths($search-config))
     else
         concat("collection('",$global:data-root,"/",$collection,"')//tei:body",
-        data:keyword(),
+        common:keyword(),
         search:persName(),
         search:placeName(), 
         search:title(),
@@ -205,8 +202,8 @@ declare function search:search-string(){
     return 
         if(request:get-parameter($parameter, '') != '') then
             if($parameter = 'start' or $parameter = 'sort-element' or $parameter = 'fq') then ()
-            else if($parameter = 'q') then 
-                (<span class="param">Keyword: </span>,<span class="match">{$search:q}&#160;</span>)
+            else if($parameter = 'q' or $parameter = 'qs') then 
+                (<span class="param">Keyword: </span>,<span class="match">{request:get-parameter($parameter, '')}&#160;</span>)
             else (<span class="param">{replace(concat(upper-case(substring($parameter,1,1)),substring($parameter,2)),'-',' ')}: </span>,<span class="match">{request:get-parameter($parameter, '')}&#160; </span>)    
         else ())
         }
@@ -334,18 +331,11 @@ function search:show-hits($node as node()*, $model as map(*), $collection as xs:
         for $hit at $p in subsequence($model("hits"), $search:start, $search:perpage)
         let $id := $hit//tei:idno[@type='URI'][1]
         let $expanded := kwic:expand($hit)
-        order by ft:score($hit) descending
         return
             <div class="row" xmlns="http://www.w3.org/1999/xhtml" style="border-bottom:1px dotted #eee; padding-top:.5em">
                 <div class="col-md-12">
                       <div class="col-md-1" style="margin-right:-1em; padding-top:.25em;">
-                        <span class="badge">
-                            {
-                                if(request:get-parameter('child-rec', '') != '' and ($search:sort-element = '' or not(exists($search:sort-element)))) then
-                                    string($hit/child::*/tei:listRelation/tei:relation[@passive[matches(.,request:get-parameter('child-rec', ''))]]/tei:desc[1]/tei:label[@type='order']/@n)
-                                else $search:start + $p - 1
-                            }
-                        </span>
+                        <span class="badge">{$search:start + $p - 1}</span>
                       </div>
                       <div class="col-md-9" xml:lang="en">
                         {tei2html:summary-view($hit, '', $id) }

@@ -16,26 +16,28 @@ declare namespace xlink = "http://www.w3.org/1999/xlink";
 declare function page:add-sort-options($hit, $sort-element as xs:string*){
     if($sort-element != '') then
         if($sort-element = 'title') then 
-            global:build-sort-string($hit/ancestor::tei:TEI/descendant::tei:title[1],'')
+            global:build-sort-string($hit/descendant::tei:titleStmt/tei:title[1]/text(),'')
         else if($sort-element = 'author') then 
-            if($hit/ancestor::tei:TEI/descendant::tei:author[1]) then 
-                if($hit/ancestor::tei:TEI/descendant::tei:author[1]/descendant-or-self::tei:surname) then 
-                    $hit/ancestor::tei:TEI/descendant::tei:author[1]/descendant-or-self::tei:surname[1]
-                else $hit/ancestor::tei:TEI/descendant::tei:author[1]
+            if($hit/descendant::tei:author[1]) then 
+                if($hit/descendant::tei:author[1]/descendant-or-self::tei:surname) then 
+                    global:build-sort-string($hit/descendant::tei:author[1]/descendant-or-self::tei:surname[1]/text(),'')
+                else $hit/descendant::tei:author[1]
             else 
-                if($hit/ancestor::tei:TEI/descendant::tei:editor[1]/descendant-or-self::tei:surname) then 
-                    $hit/ancestor::tei:TEI/descendant::tei:editor[1]/descendant-or-self::tei:surname[1]
-                else $hit/ancestor::tei:TEI/descendant::tei:editor[1]
+                if($hit/descendant::tei:editor[1]/descendant-or-self::tei:surname) then 
+                    global:build-sort-string($hit/descendant::tei:editor[1]/descendant-or-self::tei:surname[1]/text(),'')
+                else $hit/descendant::tei:editor[1]
         else if($sort-element = 'pubDate') then 
-            $hit/ancestor::tei:TEI/descendant::tei:imprint[1]/descendant-or-self::tei:date[1]
+            $hit/descendant::tei:imprint[1]/descendant-or-self::tei:date[1]
         else if($sort-element = 'pubPlace') then 
-            $hit/ancestor::tei:TEI/descendant::tei:imprint[1]/descendant-or-self::tei:pubPlace[1]
+            global:build-sort-string($hit/descendant::tei:imprint[1]/descendant-or-self::tei:pubPlace[1],'')
         else if($sort-element = 'persDate') then
-            if($hit/ancestor::tei:TEI/descendant::tei:birth) then $hit/ancestor::tei:TEI/descendant::tei:birth/@syriaca-computed-start
-            else if($hit/ancestor::tei:TEI/descendant::tei:death) then $hit/ancestor::tei:TEI/descendant::tei:death/@syriaca-computed-start
+            if($hit/descendant::tei:birth) then $hit/descendant::tei:birth/@syriaca-computed-start
+            else if($hit/descendant::tei:death) then $hit/descendant::tei:death/@syriaca-computed-start
             else ()
+        else if($sort-element = 'volume') then
+            xs:integer($hit/descendant::tei:biblScope[@type="vol"][1]/@n)            
         else $hit
-    else $hit
+    else $hit   
 };
 
 (:~
