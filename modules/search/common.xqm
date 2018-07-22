@@ -134,7 +134,10 @@ declare function common:query(){
     let $string := 
         if(request:get-parameter('keywordProximity', '') castable as xs:integer) then
             concat(request:get-parameter('q', ''),'~',request:get-parameter('keywordProximity', ''))
-        else request:get-parameter('q', '')
+        else if(request:get-parameter('keywordProximity', '') castable as xs:integer) then
+            concat(request:get-parameter('qs', ''),'~',request:get-parameter('keywordProximity', ''))
+        else if(request:get-parameter('q', '') != '') then request:get-parameter('q', '')
+        else request:get-parameter('qs', '')
     let $luceneParse := common:parse-lucene($string)
     let $luceneXML := util:parse($luceneParse)
     return common:lucene2xml($luceneXML/node())
@@ -199,7 +202,7 @@ return
  : Build full-text keyword search over full record data 
 :)
 declare function common:keyword(){
-    if(request:get-parameter('q', '') != '') then
+    if(request:get-parameter('q', '') != '' or request:get-parameter('qs', '')) then
     (:    
         if(request:get-parameter('qProximity', '')) then 
             if(request:get-parameter('qProximity', '') castable as xs:integer) then 
