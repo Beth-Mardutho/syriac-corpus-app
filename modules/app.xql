@@ -183,7 +183,6 @@ declare function app:display-nodes($node as node(), $model as map(*), $paths as 
         else global:tei2html($model("data"))
 }; 
 
-
 (:
  : Return tei:body/descendant/tei:bibls for use in sources
 :)
@@ -842,11 +841,13 @@ declare function app:display-ids($node as node(), $model as map(*)){
 :)  
 declare function app:display-left-menu($node as node(), $model as map(*)){
 let $toc := app:toc($model("data")/descendant::tei:body/child::*)
+let $vol := string($model("data")/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]/@n)
 return 
     if($toc != '' or $model("data")/descendant::tei:body/descendant::*[@n]) then 
         <div class="col-sm-2 col-md-2 noprint" xmlns="http://www.w3.org/1999/xhtml">
             <div class="left-menu">
                 {(
+                <h3><a href="{$global:nav-base}/volume/{$vol}">Volume {$vol}</a></h3>,
                 app:toggle-text-display($node,$model),
                 if($toc != '') then 
                     <div class="panel panel-default" id="toc">
