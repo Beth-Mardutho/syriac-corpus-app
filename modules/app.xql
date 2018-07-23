@@ -847,8 +847,8 @@ return
         <div class="col-sm-2 col-md-2 noprint" xmlns="http://www.w3.org/1999/xhtml">
             <div class="left-menu">
                 {(
-                <h3><a href="{$global:nav-base}/volume/{$vol}">Volume {$vol}</a></h3>,
                 app:toggle-text-display($node,$model),
+                 <span style="display:block; margin:1em;"><i class="fas fa-book"></i>&#160;<a href="{$global:nav-base}/volume/{$vol}">Volume {$vol} ({string($model("data")/descendant::tei:sourceDesc/descendant::tei:imprint/tei:date)})</a></span>,
                 if($toc != '') then 
                     <div class="panel panel-default" id="toc">
                       <div class="panel-heading"><a href="#" data-toggle="collapse" data-target="#showToc">Table of Contents</a>
