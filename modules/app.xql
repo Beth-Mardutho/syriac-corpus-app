@@ -112,7 +112,7 @@ return
                     else if($f = 'corrections') then
                         (<a class="btn btn-default btn-xs" data-toggle="modal" data-target="#feedback"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Corrections?</a>,'&#160;') 
                     else if($f = 'pdf') then
-                        let $uri := replace($model("data")//tei:idno[@type="PDF"][1]//text(),
+                        let $uri := replace($model("data")//tei:idno[@type="PDF"]//text(),
                                          $global:base-uri,'https://github.com/Beth-Mardutho/hugoye-data/raw/master'
                                      )
                         return    
@@ -862,7 +862,7 @@ return
                 )}
             </div>
         </div>        
-    else ()
+    else <span style="display:block; margin:1em;"><i class="fas fa-book"></i>&#160;<a href="{$global:nav-base}/volume/{$vol}">Volume {$vol} ({string($model("data")/descendant::tei:sourceDesc/descendant::tei:imprint/tei:date)})</a></span>
 }; 
 
 (:~
