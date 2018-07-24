@@ -1,4 +1,4 @@
-<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:t="http://www.tei-c.org/ns/1.0" xmlns:x="http://www.w3.org/1999/xhtml" xmlns:saxon="http://saxon.sf.net/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:local="http://syriaca.org/ns" exclude-result-prefixes="xs t x saxon local" version="2.0">
+<xsl:stylesheet xmlns="http://www.w3.org/1999/xhtml" xmlns:saxon="http://saxon.sf.net/" xmlns:local="http://syriaca.org/ns" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:t="http://www.tei-c.org/ns/1.0" xmlns:x="http://www.w3.org/1999/xhtml" xmlns:xs="http://www.w3.org/2001/XMLSchema" exclude-result-prefixes="xs t x saxon local" version="2.0">
 
  <!-- ================================================================== 
        Copyright 2013 New York University  
@@ -396,7 +396,7 @@
                 </xsl:when>
                 <xsl:otherwise/>
             </xsl:choose>
-            <xsl:if test="@n">
+            
                 <xsl:choose>
                     <xsl:when test="child::t:head">
                         <span id="{$currentid}"/>
@@ -407,7 +407,7 @@
                         </span>
                     </xsl:otherwise>
                 </xsl:choose>
-            </xsl:if>
+            
             <xsl:apply-templates>
                 <xsl:with-param name="parentID" select="$currentid"/>
             </xsl:apply-templates>
@@ -1209,7 +1209,7 @@
             <xsl:variable name="url">
                 <xsl:choose>
                     <xsl:when test="starts-with(@url,$base-uri)">
-                        <xsl:value-of select="replace(@url, $base-uri, 'https://github.com/Beth-Mardutho/hugoye-data/raw/master/')"/>
+                        <xsl:value-of select="replace(@url, $base-uri, 'https://github.com/Beth-Mardutho/hugoye-data/raw/dev/')"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="@url"/>
