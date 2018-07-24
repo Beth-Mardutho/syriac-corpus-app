@@ -90,6 +90,7 @@
             <article-type type="bibliography" label="Bibliographies" peer-reviewed="no" order="5"/>
             <article-type type="report" label="Reports" peer-reviewed="no" order="6"/>
             <article-type type="review,bookReview" label="Reviews" peer-reviewed="no" order="7"/>
+            <article-type type="announcement label="Announcements" peer-reviewed="no" order="8"/>
         </article-display-order>
     </config>
     
