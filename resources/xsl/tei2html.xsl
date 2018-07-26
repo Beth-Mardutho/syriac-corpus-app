@@ -1209,7 +1209,7 @@
             <xsl:variable name="url">
                 <xsl:choose>
                     <xsl:when test="starts-with(@url,$base-uri)">
-                        <xsl:value-of select="replace(@url, $base-uri, 'https://github.com/Beth-Mardutho/hugoye-data/raw/dev/')"/>
+                        <xsl:value-of select="replace(@url, $base-uri, 'https://github.com/Beth-Mardutho/hugoye-data/raw/master')"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="@url"/>
