@@ -332,7 +332,7 @@ let $status := string($model("data")/descendant::tei:revisionDesc/@status)
 return
     if($status = 'published' or $status = '') then ()
     else
-    <span class="rec-status {$status} btn btn-info">Status: {$status}</span>
+    <span class="rec-status {$status} btn btn-info">Status: {normalize-space($status)}</span>
 };
 
 (:~
