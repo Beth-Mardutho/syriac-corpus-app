@@ -812,7 +812,7 @@ declare function app:display-ids($node as node(), $model as map(*)){
               <div style="margin-top:1em;">
                 <span class="h5-inline">Status: 
             </span>
-                <span>{functx:capitalize-first(functx:camel-case-to-words(string($model("data")/descendant::tei:revisionDesc/@status),' '))}</span>
+                <span>{if(string($model("data")/descendant::tei:revisionDesc/@status) = 'PDF') then 'PDF' else functx:capitalize-first(functx:camel-case-to-words(string($model("data")/descendant::tei:revisionDesc/@status),' '))}</span>
               &#160;<a href="{$global:nav-base}/documentation/wiki.html?wiki-page=/Status-of-Contents-in-Hugoye&amp;wiki-uri=https://github.com/Beth-Mardutho/hugoye-data/wiki"><span class="glyphicon glyphicon-question-sign text-info moreInfo"></span></a>
               </div>,
               <div style="margin-top:1em;">
