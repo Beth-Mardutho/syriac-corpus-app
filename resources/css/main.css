@@ -10,11 +10,11 @@
 /* Dev only: corner ribbon */
 /* The ribbons */
 .corner-ribbon{
-  width: 200px;
+  width: 250px;
   background: #e43;
   position: absolute;
   top: 25px;
-  left: -50px;
+  left: -65px;
   text-align: center;
   /*line-height: 50px;*/
   letter-spacing: 1px;
@@ -34,7 +34,7 @@
 
 .corner-ribbon.top-left{
   top: 25px;
-  left: -50px;
+  left: -65px;
   transform: rotate(-45deg);
   -webkit-transform: rotate(-45deg);
 }
@@ -44,13 +44,13 @@
 
 .draft-info a{color:white;}
 #draft-info{
-  width: 410px;
+  width: 430px;
   position: absolute;
   top: 45px;
   left: -96px;
-  padding:1.5em 2em;
+  padding:1em 2em;
   text-align: center;
-  letter-spacing: .75px;
+  letter-spacing: .5px;
   color: #f0f0f0;
   background: #999; background-color: rgba(128,128,128, 0.95);
   transform: rotate(-45deg);
@@ -62,7 +62,6 @@
 body {font-family: arial, sans-serif;}
 #content {background-color:white; padding-top: 50px;}
 footer{background-color:#444;}
-.right-menu {text-justify:none;}
 /*#toc {position: fixed; top:125px;}*/
 
 /* Removed extra padding introduced by Bootstrap for rows. Was causing issues with background images */
@@ -314,7 +313,6 @@ td {
 .section.type ul {padding-left:0;}
 
 /* Browse page styles */
-.volumes-list { column-count: 3; column-gap: 40px; column-width: 300px; margin-bottom:1.5em;}
 .syr-list{padding-right:7em; padding-top:2em; text-align: right;}
 .en-list{padding-left:5em; padding-top:2em;}
 
@@ -469,8 +467,8 @@ td {
 :lang(syr),:lang(syc) {
  font-family: "EstrangeloEdessa", "Estrangelo Edessa", Verdana, Arial, Helvetica, sans-serif;
   /*font-size:large;*/
-  font-size:20px; 
-  line-height:20px;
+  font-size:24px; 
+  line-height:24px;
   text-align: right;
   font-style: normal !important;
 }
@@ -799,7 +797,6 @@ pre {
       overflow:visible;
   }
   .tooltip-inner {
-    max-width: 275px;
     padding:.25em;
     padding-left:1.5em;
     overflow:visible;
@@ -842,12 +839,7 @@ pre {
 .tei-milestone.chapter.display {display:block; height:1em; width:100%; border:bottom:1px solid #eee;}
 .tei-milestone.verse.display {display:block;}
 .tei-lg.display, .tei-lb.display {display:block; margin-bottom:1.25em;}
-.tei-graphic img {width:100%; overflow:auto;}
-.tei-caption {display:block; margin:1em;}
-.center {text-align:center;}
-.bold {font-weight:bold;}
-.italic {font-style:italic;}
-
+tei-text
 /*.tei-p {text-align: justify; text-justify: inter-word;}*/
 .tei-cite {display:block; margin:1em; padding:1em; border-left:1px soldi #eee;}
 .tei-quote {display:block; margin:1em; padding:1em;}
@@ -870,12 +862,6 @@ pre {
 .text-number.display {display:inline;}
 
 /* Table of Contents */
-.left-menu { 
-    position: fixed;
-    width:inherit;
-    top:125px;
-    z-index: 125;
-}
 .toc {display:block; margin-left:.75em;}
 .toc-item {display:block; font-size: small; padding:.5em; border-bottom:1px dotted #ccc;}
 .toc-item:last-child {border-bottom:none;}
@@ -1005,7 +991,6 @@ div.toggle-buttons .toggle-label {font-size: 1em; font-weight:600}
 
 /* Small screens */
 @media screen and (max-width: 768px) {
-    .left-menu { position: relative;}
     .navbar-collapse, .dropdown-menu {float:none; width:100% !important;}
     .navbar-nav li {width:100% !important; float:none;}
     .mobile-submenu {
