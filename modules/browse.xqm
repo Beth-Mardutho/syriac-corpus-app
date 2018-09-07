@@ -66,14 +66,14 @@ declare function browse:group-volumes($node as node(), $model as map(*), $collec
     let $volumeNum := 
         if($volume = 'current') then 
             distinct-values(
-                for $a in collection('/db/apps/hugoye-data/data/tei')//tei:TEI[descendant::tei:revisionDesc[@status=('Published','published')]]/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]
+                for $a in collection($global:data-root || '/tei')//tei:TEI[descendant::tei:revisionDesc[@status=('Published','published')]]/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]
                 let $sort := if($a castable as xs:integer) then xs:integer($a) else 0
                 order by $sort
                 return $a
             )[last()]
         else if($volume = 'pre-publication') then 
             distinct-values(
-                for $a in collection('/db/apps/hugoye-data/data/tei')//tei:TEI[descendant::tei:revisionDesc[@status=('preview','Preview')]]/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]
+                for $a in collection($global:data-root || '/tei')//tei:TEI[descendant::tei:revisionDesc[@status=('preview','Preview')]]/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]
                 let $sort := if($a castable as xs:integer) then xs:integer($a) else 0
                 order by $sort
                 return $a

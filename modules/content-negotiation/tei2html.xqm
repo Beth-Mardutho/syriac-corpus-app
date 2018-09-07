@@ -113,8 +113,8 @@ declare function tei2html:summary-view-generic($nodes as node()*, $id as xs:stri
                     <label>Source: </label> {bibl2html:citation($nodes/descendant::tei:sourceDesc/descendant::tei:monogr)}
                 </span>
             else ()}
-            {if($nodes/descendant-or-self::*[starts-with(@xml:id,'abstract')]) then 
-                for $abstract in $nodes/descendant::*[starts-with(@xml:id,'abstract')]
+            {if($nodes[//@xml:id = '^abstract']) then 
+                for $abstract in $nodes/descendant::*[@xml:id = '^abstract']
                 let $string := string-join($abstract/descendant-or-self::*/text(),' ')
                 let $blurb := 
                     if(count(tokenize($string, '\W+')[. != '']) gt 25) then  

@@ -118,7 +118,7 @@ declare function data:get-browse-data($collection as xs:string*, $element as xs:
     let $hits-main := util:eval(concat(data:build-collection-path($collection),facet:facet-filter(facet:facet-definition($collection,())),data:lang-filter($element)))
     return  
         if(request:get-parameter('view', '') = 'title') then 
-            if(request:get-parameter('alpha-filter', '') = 'ALL' or request:get-parameter('alpha-filter', '') = '') then
+            if(request:get-parameter('alpha-filter', '') = 'ALL') then
                 for $hit in $hits-main
                 let $num := if(xs:integer($hit/@n)) then xs:integer($hit/@n) else 0
                 order by global:build-sort-string($hit/text()[1],''), $num
@@ -129,7 +129,7 @@ declare function data:get-browse-data($collection as xs:string*, $element as xs:
                 order by global:build-sort-string($hit/text()[1],$data:computed-lang), $num
                 return <browse xmlns="http://www.tei-c.org/ns/1.0" sort-title="{$hit}">{$hit/ancestor::tei:TEI}</browse>             
         else
-            if(request:get-parameter('alpha-filter', '') = 'ALL' or request:get-parameter('alpha-filter', '') = '') then
+            if(request:get-parameter('alpha-filter', '') = 'ALL') then
                 for $hit in $hits-main
                 order by global:build-sort-string(page:add-sort-options($hit/text()[1],$element),'') 
                 return <browse xmlns="http://www.tei-c.org/ns/1.0" sort-title="{$hit}">{$hit/ancestor::tei:TEI}</browse>
