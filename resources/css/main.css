@@ -337,7 +337,12 @@ td {
       background-color: #eee;
       cursor: pointer;
     }
-
+    
+.volumes-list {   
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;}
+    
 .browse-map {margin:0;}
 .inline-map {margin-left:-2em; margin-bottom:1em;}
 .map-lg #map {height:500px !important;}
