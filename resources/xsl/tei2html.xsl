@@ -458,7 +458,7 @@
         </p>
     </xsl:template>
     
-    <xsl:template match="text()">
+    <xsl:template match="text()" mode="#all">
         <xsl:choose>
             <xsl:when test="ancestor-or-self::*[@xml:lang][1]/@xml:lang = 'syr'">
                 <xsl:analyze-string select="." regex="\W">
@@ -467,13 +467,13 @@
                     </xsl:matching-substring>
                     <xsl:non-matching-substring>
                         <a href="https://sedra.bethmardutho.org/api/word/{.}.html" class="sedra">
-                            <xsl:value-of select="."/>
+                            <xsl:value-of select="." xml:space="preserve"/>
                         </a>
                     </xsl:non-matching-substring>
                 </xsl:analyze-string>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="."/>
+                <xsl:value-of select="." xml:space="preserve"/>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
@@ -518,7 +518,7 @@
                         </xsl:attribute>
                     </xsl:if>
                     <xsl:variable name="bibl-text">
-                        <xsl:apply-templates mode="biblist"/>    
+                        <xsl:apply-templates mode="biblist" xml:space="preserve"/>    
                     </xsl:variable>
                     <xsl:sequence select="$bibl-text"></xsl:sequence>
                     <xsl:if test="not(ends-with(string-join($bibl-text//text(),''),'.'))">
