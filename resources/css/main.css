@@ -198,7 +198,7 @@ footer a{text-align:center; color:white !important;}
 .grey {background-color:#eee;}
 .grey-dark {background-color:#ccc;}
 .white {background-color:white;}
-
+.center {text-align:center;}
 /* Block styles */
 .content-block {background-color:#ffffff !important;}
 .top-padding {margin-top:2em;}
