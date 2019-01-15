@@ -36,14 +36,19 @@
     </div>
     <!-- Floating footnotes display -->
     <div id="footnoteDisplay" class="footnote">
-        <div class="content"/>  
+        <div class="content" id="contentText"/>  
+        <a class="badge access-pills pull-right" id="copyFootnote" 
+            data-toggle="tooltip" title="Copy footnote text to clipboard." 
+            data-clipboard-action="copy" data-clipboard-target="#contentText" style="color:#555;">
+            <span class="glyphicon glyphicon-copy" aria-hidden="true"/> Copy footnote text</a>
     </div>
     
     <script type="text/javascript">
-      <![CDATA[
+        <![CDATA[
       $(document).ready(function () {
+      
         //$('#sedraDisplay').hide();
-        
+            
         $('input.toggleDisplay').click(function() {
             var display = $(this).data("element");
             $('.'+ display).children('.text-number').toggle();
@@ -74,7 +79,7 @@
             })    
             .fail(function() {
                 $('#sedraContent div.content').empty();
-                $( "#sedraContent div.content" ).html( 'There are no results for this word. Please try using the <a href="http://sedra.bethmardutho.org/">Syriac Dictionary Lookup</a>' );
+                $( "#sedraContent div.content" ).html( 'There are no results for this word. Please try using the &lt;a href="http://sedra.bethmardutho.org/"&gt;Syriac Dictionary Lookup&lt;/a&gt;' );
             });
         });
         
@@ -97,8 +102,23 @@
             var content = $(href).html()
             $('#footnoteDisplay').css('display','block');
             $('#footnoteDisplay').css({'top':e.pageY-50,'left':e.pageX+25, 'position':'absolute'});
-            $('#footnoteDisplay div.content').html( content );    
+            $('#footnoteDisplay div.content').html( content );
+            
         });
+        
+        $('#footnoteDisplay').click(function(e) {
+            e.stopPropagation();
+        });
+        
+        /* Copy footnote to clipboard */
+        var btn = document.getElementById('copyFootnote');
+        var clipboard = new Clipboard(btn);
+            clipboard.on('success', function(e) {
+                console.log(e);
+            });
+        clipboard.on('error', function(e) {
+                console.log(e);
+            });        
        });
         ]]>
     </script>
