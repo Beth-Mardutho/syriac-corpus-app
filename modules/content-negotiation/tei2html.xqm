@@ -94,7 +94,7 @@ declare function tei2html:summary-view($nodes as node()*, $lang as xs:string?, $
 declare function tei2html:summary-view-generic($nodes as node()*, $id as xs:string?) as item()* {
     let $title := if($nodes/descendant-or-self::tei:title[@type='main']) then 
                     ($nodes/descendant-or-self::tei:title[@type='main']/text(),
-                    if($nodes/descendant-or-self::tei:title[@type='sub']) then 
+                    if($nodes/descendant-or-self::tei:title[@type='sub']//text() != '') then 
                         (': ', $nodes/descendant-or-self::tei:title[@type='sub']/text())
                     else () )
                     (:$nodes/descendant-or-self::tei:title[@type='sub']//text()[not(parent::tei:note)],''):)

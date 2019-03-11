@@ -971,7 +971,7 @@
             <xsl:if test="@source">
                 <xsl:sequence select="local:do-refs(@source,@xml:lang)"/>
             </xsl:if>
-        </p>   
+        </p>
     </xsl:template>
     <xsl:template match="t:note" mode="abstract">
         <p>
