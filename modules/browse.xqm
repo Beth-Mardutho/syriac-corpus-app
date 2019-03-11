@@ -59,21 +59,21 @@ declare function browse:get-all($node as node(), $model as map(*), $collection a
         else if($element != '') then
             data:get-browse-data($collection, $element)
         else data:get-browse-data($collection, "tei:titleStmt/tei:author/tei:name/tei:surname")    
-    return map{"browse-data" := $hits }    
+    return map{"browse-data" := collection($global:data-root || '/tei')//tei:TEI }    
 };
 
 declare function browse:group-volumes($node as node(), $model as map(*), $collection as xs:string?, $volume as xs:string?){
     let $volumeNum := 
         if($volume = 'current') then 
             distinct-values(
-                for $a in collection('/db/apps/hugoye-data/data/tei')//tei:TEI[descendant::tei:revisionDesc[@status=('Published','published')]]/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]
+                for $a in collection($global:data-root || '/tei')//tei:TEI[descendant::tei:revisionDesc[@status=('Published','published')]]/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]
                 let $sort := if($a castable as xs:integer) then xs:integer($a) else 0
                 order by $sort
                 return $a
             )[last()]
         else if($volume = 'pre-publication') then 
             distinct-values(
-                for $a in collection('/db/apps/hugoye-data/data/tei')//tei:TEI[descendant::tei:revisionDesc[@status=('preview','Preview')]]/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]
+                for $a in collection($global:data-root || '/tei')//tei:TEI[descendant::tei:revisionDesc[@status=('preview','Preview')]]/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]
                 let $sort := if($a castable as xs:integer) then xs:integer($a) else 0
                 order by $sort
                 return $a
@@ -109,19 +109,18 @@ declare function browse:group-volumes($node as node(), $model as map(*), $collec
                      return  
                         <div class="indent" style="border-bottom:1px dotted #eee; padding:1em" date="{$date}" type="{$type}" issue="{string($article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="issue"]/@n)}" volume="{$volumeNum}">{tei2html:summary-view(root($article), '', $id)}</div> 
         else 
-            let $hits := $model("browse-data")
-            return     
-                     for $article in $hits
-                     let $vol := $article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"][1]
-                     let $date := $article/descendant::tei:publicationStmt/tei:date
-                     group by $vol-facet := $vol
-                     let $label := concat('Volume ',$vol-facet/text(), ' (',$date[1],')')
-                     let $sort := if($vol-facet castable as xs:integer) then xs:integer($vol-facet) else 0
-                     order by $sort descending
-                     return 
-                        <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em;">
-                            <a href="{concat($global:nav-base,'/volume/', $vol-facet)}"> {$label} </a>&#160; 
-                        </div> 
+            let $hits := $model("browse-data")   
+            for $article in $hits
+            let $vol := $article/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"][1]
+            let $date := $article/descendant::tei:publicationStmt/tei:date
+            group by $vol-facet := $vol
+            let $label := concat('Volume ',$vol-facet/text(), ' (',$date[1],')')
+            let $sort := if($vol-facet castable as xs:integer) then xs:integer($vol-facet) else 0
+            order by $sort descending
+            return 
+                <div class="indent" xmlns="http://www.w3.org/1999/xhtml" style="margin-bottom:1em;">
+                    <a href="{concat($global:nav-base,'/volume/', $vol-facet)}"> {$label} </a>&#160; 
+                </div> 
         return  map {"group-by-volume" := $results}
 };
 
@@ -279,11 +278,7 @@ declare function browse:browse-volumes($node as node(), $model as map(*), $colle
              </div> 
         else 
             <div xmlns="http://www.w3.org/1999/xhtml" class="results-panel">
-                <div class="indent volumes-list">{                     
-                for $data in $hits
-                return $data 
-                }
-                </div>
+                <div class="indent volumes-list">{$hits}</div>
             </div>                   
 };
 

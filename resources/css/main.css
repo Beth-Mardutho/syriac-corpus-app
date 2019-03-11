@@ -198,7 +198,7 @@ footer a{text-align:center; color:white !important;}
 .grey {background-color:#eee;}
 .grey-dark {background-color:#ccc;}
 .white {background-color:white;}
-
+.center {text-align:center;}
 /* Block styles */
 .content-block {background-color:#ffffff !important;}
 .top-padding {margin-top:2em;}
@@ -337,7 +337,12 @@ td {
       background-color: #eee;
       cursor: pointer;
     }
-
+    
+.volumes-list {   
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;}
+    
 .browse-map {margin:0;}
 .inline-map {margin-left:-2em; margin-bottom:1em;}
 .map-lg #map {height:500px !important;}
@@ -991,6 +996,7 @@ div.toggle-buttons .toggle-label {font-size: 1em; font-weight:600}
 
 /* Small screens */
 @media screen and (max-width: 768px) {
+    .left-menu { position: relative;}
     .navbar-collapse, .dropdown-menu {float:none; width:100% !important;}
     .navbar-nav li {width:100% !important; float:none;}
     .mobile-submenu {
@@ -999,6 +1005,7 @@ div.toggle-buttons .toggle-label {font-size: 1em; font-weight:600}
         margin-left:3em;
         }
     .caret {float:left; margin-left:.5em; margin-top:.5em;}    
+    .interior-content {margin:.25em; padding:.25em;}
     .hugoye-banner {
         height:100px !important;
         }
@@ -1006,6 +1013,8 @@ div.toggle-buttons .toggle-label {font-size: 1em; font-weight:600}
 
 /* Medium screens */
 @media screen and (max-width: 992px) {   
+    .section, .container, .white {margin:0; padding:0;}
+    .interior-content {margin:.25em; padding:.25em;}
 .hugoye-banner {
     height:125px !important;
     }

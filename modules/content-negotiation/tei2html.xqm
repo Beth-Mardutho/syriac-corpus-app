@@ -94,7 +94,7 @@ declare function tei2html:summary-view($nodes as node()*, $lang as xs:string?, $
 declare function tei2html:summary-view-generic($nodes as node()*, $id as xs:string?) as item()* {
     let $title := if($nodes/descendant-or-self::tei:title[@type='main']) then 
                     ($nodes/descendant-or-self::tei:title[@type='main']/text(),
-                    if($nodes/descendant-or-self::tei:title[@type='sub']) then 
+                    if($nodes/descendant-or-self::tei:title[@type='sub']//text() != '') then 
                         (': ', $nodes/descendant-or-self::tei:title[@type='sub']/text())
                     else () )
                     (:$nodes/descendant-or-self::tei:title[@type='sub']//text()[not(parent::tei:note)],''):)
@@ -106,15 +106,17 @@ declare function tei2html:summary-view-generic($nodes as node()*, $id as xs:stri
             <a href="{replace($id,$global:base-uri,$global:nav-base)}" dir="ltr">{$title}</a> 
             {if($nodes/descendant::tei:titleStmt/tei:author) then 
                 (:(' by ', tei2html:tei2html($nodes/descendant::tei:titleStmt/tei:author/tei:name)):)
-                (' by ', bibl2html:emit-responsible-persons($nodes/descendant::tei:titleStmt/tei:author,10))
+                <span class="results-list-desc desc" dir="ltr" lang="en">
+                {(' By ', bibl2html:emit-responsible-persons($nodes/descendant::tei:titleStmt/tei:author,10))}
+                </span>
             else ()}
             {if($nodes/descendant::tei:biblStruct) then 
                 <span class="results-list-desc desc" dir="ltr" lang="en">
                     <label>Source: </label> {bibl2html:citation($nodes/descendant::tei:sourceDesc/descendant::tei:monogr)}
                 </span>
             else ()}
-            {if($nodes/descendant-or-self::*[starts-with(@xml:id,'abstract')]) then 
-                for $abstract in $nodes/descendant::*[starts-with(@xml:id,'abstract')]
+            {if($nodes[//@xml:id = '^abstract']) then 
+                for $abstract in $nodes/descendant::*[@xml:id = '^abstract']
                 let $string := string-join($abstract/descendant-or-self::*/text(),' ')
                 let $blurb := 
                     if(count(tokenize($string, '\W+')[. != '']) gt 25) then  
