@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <meta xmlns="http://exist-db.org/xquery/repo">
     <description>Hugoye: Journal of Syriac Studies</description>
     <author/>
@@ -21,7 +22,7 @@
         <!-- Web Site URL -->
         <url>https://hugoye.bethmardutho.org/</url>
         <!-- Root of app for building dynamic links. Default is eXist app root -->
-        <nav-base>/exist/apps/hugoye</nav-base>
+        <nav-base/>
         <!-- eXist app root for app deployment-->
         <app-root>hugoye</app-root>
         <!-- eXist data app root for gazetteer data -->

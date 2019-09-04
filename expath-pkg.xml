@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package xmlns="http://expath.org/ns/pkg" name="http://hugoye.org/hugoye" abbrev="hugoye" version="0.21" spec="1.0">
+<package xmlns="http://expath.org/ns/pkg" name="https://hugoye.bethmardutho.org/" abbrev="hugoye" version="0.24" spec="1.0">
     <title>Hugoye: Journal of Syriac Studies</title>
-    <!-- TEI data -->
-    <dependency package="http://hugoye.org/hugoye-data"/>
-    <!-- eXist shared resources -->
-    <dependency package="http://exist-db.org/apps/shared"/>
-    <!-- Functx  -->
-    <dependency package="http://www.functx.com"/>
 </package>
