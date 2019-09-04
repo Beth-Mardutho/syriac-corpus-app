@@ -406,7 +406,7 @@
                 <xsl:choose>
                     <xsl:when test="count(descendant::t:respStmt) &gt; 2">
                         <xsl:value-of select="count(descendant::t:respStmt)"/> contributors (
-                            <a class="togglelink" data-toggle="collapse" data-target="#show-contributors" href="#show-contributors" data-text-swap="Hide"> See all &#160;<i class="glyphicon glyphicon-circle-arrow-right"/>
+                            <a class="togglelink" data-toggle="collapse" data-target="#show-contributors" href="#show-contributors" data-text-swap="Hide"> See all  <i class="glyphicon glyphicon-circle-arrow-right"/>
                         </a>)
                             <div class="collapse" id="show-contributors">
                             <ul>

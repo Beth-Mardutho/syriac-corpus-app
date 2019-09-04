@@ -996,7 +996,11 @@ div.toggle-buttons .toggle-label {font-size: 1em; font-weight:600}
 
 /* Small screens */
 @media screen and (max-width: 768px) {
-    .left-menu { position: relative;}
+<<<<<<< HEAD
+=======
+    .section, .container, .white {margin:0; padding:0;}
+    .interior-content {margin:.25em; padding:.25em;}
+>>>>>>> master
     .navbar-collapse, .dropdown-menu {float:none; width:100% !important;}
     .navbar-nav li {width:100% !important; float:none;}
     .mobile-submenu {

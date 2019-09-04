@@ -106,7 +106,7 @@
         </xsl:variable>
         <xsl:variable name="ana">
             <xsl:for-each select="distinct-values(descendant::t:seriesStmt/t:biblScope/t:title)">
-                <xsl:text>&#160; </xsl:text>
+                <xsl:text>  </xsl:text>
                 <xsl:choose>
                     <xsl:when test=". = 'The Syriac Biographical Dictionary'"/>
                     <xsl:when test=". = 'A Guide to Syriac Authors'">
@@ -320,7 +320,7 @@
             </xsl:if>
             <xsl:if test="descendant::t:biblStruct">
                 <span class="results-list-desc desc" dir="ltr" lang="en">
-                    <label>Source:&#160;</label>
+                    <label>Source: </label>
                     <xsl:apply-templates select="descendant::t:biblStruct" mode="bibliography"/>
                 </span>
             </xsl:if>
