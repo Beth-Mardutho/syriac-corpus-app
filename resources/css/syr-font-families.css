@@ -177,3 +177,27 @@
 	font-weight: bold;
 	font-style: normal;
 }
+
+@font-face {
+    font-family: 'Antinoou';
+    src: local('Antinoou');
+    src: url('../fonts/antinoou.woff') format('woff'), url('../fonts/antinoou.ttf') format('truetype'), url('..fonts/antinoou.svg') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Scheherazade';
+    src: local('Scheherazade');
+    src: url('../fonts/scheherazade.woff') format('woff'), url('../fonts/scheherazade.ttf') format('truetype'), url('..fonts/scheherazade.svg') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SBL_BLit';
+    src: local('SBL_BLit');
+    src: url('../fonts/sbl_blit.woff') format('woff'), url('../fonts/sbl_blit.ttf') format('truetype'), url('..fonts/sbl_blit.svg') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}

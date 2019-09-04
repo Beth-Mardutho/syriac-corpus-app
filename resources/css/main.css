@@ -495,11 +495,35 @@ td {
 }
 
 :lang(ar) {
- font-family: arial, sans-serif;
+ font-family: "Scheherazade", arial, sans-serif;
   font-size:24px; 
   line-height:24px;
  text-align: right;
  font-style: normal !important;
+}
+
+:lang(cop) {
+    font-family: "Antinoou", Verdana, Arial, Helvetica, sans-serif;
+    font-size:24px;
+    line-height:24px;
+    text-align: left;
+    font-style:normal !important;
+}
+
+:lang(heb) {
+    font-family: "SBL_BLit", "SBL Bib Lit", Verdana, Arial, Helvetica, sans-serif;
+    font-size:24px;
+    line-height:24px;
+    text-align: left;
+    font-style:normal !important;
+}
+
+:lang(gr) {
+    font-family: "SBL_BLit", "SBL Bib Lit", Verdana, Arial, Helvetica, sans-serif;
+    font-size:24px;
+    line-height:24px;
+    text-align: left;
+    font-style:normal !important;
 }
 
 /* link icon styles (inline) */
