@@ -1033,6 +1033,9 @@ div.toggle-buttons .toggle-label {font-size: 1em; font-weight:600}
     .hugoye-banner {
         height:100px !important;
         }
+	.banner-text {
+		font:1em;
+	}
     }
 
 /* Medium screens */
