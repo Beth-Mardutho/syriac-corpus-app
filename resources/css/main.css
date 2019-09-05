@@ -1034,7 +1034,8 @@ div.toggle-buttons .toggle-label {font-size: 1em; font-weight:600}
         height:100px !important;
         }
 	.banner-text {
-		font:1em;
+		font:1em !important;
+		margin-left:1em;
 	}
     }
 
