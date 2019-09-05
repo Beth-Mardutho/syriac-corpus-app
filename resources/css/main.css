@@ -472,56 +472,56 @@ td {
 :lang(syr),:lang(syc) {
  font-family: "EstrangeloEdessa", "Estrangelo Edessa", Verdana, Arial, Helvetica, sans-serif;
   /*font-size:large;*/
-  font-size:24px; 
-  line-height:24px;
+  font-size:18px; 
+  line-height:18px;
   text-align: right;
   font-style: normal !important;
 }
 
 :lang(syr-Syrj), :lang(syc-Syrj) {
  font-family: "SertoBatnan", "Serto Batnan", Verdana, Arial, Helvetica, sans-serif;
-  font-size:24px; 
-  line-height:24px;
+  font-size:18px; 
+  line-height:18px;
  text-align: right;
  font-style: normal !important;
 }
 
 :lang(syr-Syre), :lang(syc-Syre) {
  font-family: "EastSyriacAdiabene", "East Syriac Adiabene", Verdana, Arial, Helvetica, sans-serif;
-  font-size:24px; 
-  line-height:24px;
+  font-size:18px; 
+  line-height:18px;
   text-align: right;
   font-style: normal !important;
 }
 
 :lang(ar) {
  font-family: "Scheherazade", arial, sans-serif;
-  font-size:24px; 
-  line-height:24px;
+  font-size:18px; 
+  line-height:18px;
  text-align: right;
  font-style: normal !important;
 }
 
 :lang(cop) {
     font-family: "Antinoou", Verdana, Arial, Helvetica, sans-serif;
-    font-size:24px;
-    line-height:24px;
+    font-size:18px;
+    line-height:18px;
     text-align: left;
     font-style:normal !important;
 }
 
 :lang(heb) {
     font-family: "SBL_BLit", "SBL Bib Lit", Verdana, Arial, Helvetica, sans-serif;
-    font-size:24px;
-    line-height:24px;
+    font-size:18px;
+    line-height:18px;
     text-align: left;
     font-style:normal !important;
 }
 
 :lang(gr) {
     font-family: "SBL_BLit", "SBL Bib Lit", Verdana, Arial, Helvetica, sans-serif;
-    font-size:24px;
-    line-height:24px;
+    font-size:18px;
+    line-height:18px;
     text-align: left;
     font-style:normal !important;
 }
