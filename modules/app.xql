@@ -783,11 +783,9 @@ declare function app:display-body($node as node(), $model as map(*), $paths as x
             return <embed src="https://drive.google.com/viewerng/viewer?embedded=true&amp;url={$url}" width="100%" height="800"/>
         else ()
     return 
-        if($model("data")/descendant::tei:body/descendant::*[@n] or (app:toc($model("data")/descendant::tei:body/child::*) != '')) then 
-            <div class="col-sm-6 col-md-6 col-lg-7 mssBody">{$data-display}</div>
-        else 
-            <div class="col-sm-8 col-md-8 col-lg-9 mssBody">
-                {$data-display,<div class="PDFviewer text-center" style="width:100%;">{$pdf}</div>}</div>
+        if($pdf != '') then
+            <div class="col-sm-8 col-md-8 col-lg-9 mssBody">{$data-display,<div class="PDFviewer text-center" style="width:100%;">{$pdf}</div>}</div>
+        else  <div class="col-sm-6 col-md-6 col-lg-7 mssBody">{$data-display}</div>
 }; 
 
 (: Display ids :)
