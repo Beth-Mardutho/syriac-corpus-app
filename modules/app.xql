@@ -843,8 +843,7 @@ declare function app:display-left-menu($node as node(), $model as map(*)){
 let $toc := app:toc($model("data")/descendant::tei:body/child::*)
 let $vol := string($model("data")/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]/@n)
 return 
-    if($toc != '' or $model("data")/descendant::tei:body/descendant::*[@n]) then 
-        <div class="col-sm-2 col-md-2 noprint" xmlns="http://www.w3.org/1999/xhtml">
+    <div class="col-sm-2 col-md-2 noprint" xmlns="http://www.w3.org/1999/xhtml">
             <div class="left-menu">
                 {(
                 <span style="display:block; margin:1em;"><i class="fas fa-book"></i>&#160;<a href="{$global:nav-base}/volume/{$vol}">Volume {$vol} ({string($model("data")/descendant::tei:sourceDesc/descendant::tei:imprint/tei:date)})</a></span>,
@@ -861,8 +860,7 @@ return
                 else ()
                 )}
             </div>
-        </div>        
-    else <span style="display:block; margin:1em;"><i class="fas fa-book"></i>&#160;<a href="{$global:nav-base}/volume/{$vol}">Volume {$vol} ({string($model("data")/descendant::tei:sourceDesc/descendant::tei:imprint/tei:date)})</a></span>
+        </div>  
 }; 
 
 (:~
