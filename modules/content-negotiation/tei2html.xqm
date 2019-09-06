@@ -37,6 +37,8 @@ declare function tei2html:tei2html($nodes as node()*) as item()* {
             case element(tei:catDesc) return element li {tei2html:tei2html($node/node())}
             case element(exist:match) return
                 <span class="match" style="background-color:yellow;">{$node/text()}</span>
+            case element(tei:hi) return
+                tei2html:hi($node)                 
             case element(tei:imprint) return element span {
                     if($node/tei:pubPlace/text()) then $node/tei:pubPlace[1]/text() else (),
                     if($node/tei:pubPlace/text() and $node/tei:publisher/text()) then ': ' else (),
@@ -73,7 +75,12 @@ declare function tei2html:tei2html($nodes as node()*) as item()* {
                 return  
                     <span class="tei-title {$titleType}">{
                         (if($node/@xml:lang) then attribute lang { $node/@xml:lang } else (),
-                        tei2html:tei2html($node/node()))                 
+                            tei2html:tei2html($node/node())
+                            (:
+                            if($nodes/descendant-or-self::tei:title[@type='sub']//text() != '') then 
+                                (': ', tei2html:tei2html($nodes/descendant-or-self::tei:title[@type='sub']))
+                            else ()    :) 
+                        )                 
                     }</span>
             case element(tei:foreign) return 
                 <span dir="{if($node/@xml:lang = ('syr','ar','^syr')) then 'rtl' else 'ltr'}">{
@@ -81,6 +88,18 @@ declare function tei2html:tei2html($nodes as node()*) as item()* {
                     tei2html:tei2html($node/node()))
                 }</span>
             default return tei2html:tei2html($node/node())
+};
+
+declare function tei2html:hi($node as element (tei:hi)) {
+    if($node/@rend='italic') then 
+        <em>{tei2html:tei2html($node/node())}</em>  
+    else if($node/@rend='bold') then 
+        <strong>{tei2html:tei2html($node/node())}</strong>
+    else if($node/@rend=('superscript','sup')) then 
+        <sup>{tei2html:tei2html($node/node())}</sup>
+    else if($node/@rend=('subscript','sub')) then         
+        <sub>{tei2html:tei2html($node/node())}</sub>
+    else <span class="tei-hi tei-{$node/@rend}">{tei2html:tei2html($node/node())}</span>
 };
 
 (:
@@ -93,12 +112,9 @@ declare function tei2html:summary-view($nodes as node()*, $lang as xs:string?, $
 (: Generic short view template :)
 declare function tei2html:summary-view-generic($nodes as node()*, $id as xs:string?) as item()* {
     let $title := if($nodes/descendant-or-self::tei:title[@type='main']) then 
-                    ($nodes/descendant-or-self::tei:title[@type='main']/text(),
-                    if($nodes/descendant-or-self::tei:title[@type='sub']//text() != '') then 
-                        (': ', $nodes/descendant-or-self::tei:title[@type='sub']/text())
-                    else () )
+                        tei2html:tei2html($nodes/descendant-or-self::tei:title[@type='main'])
                     (:$nodes/descendant-or-self::tei:title[@type='sub']//text()[not(parent::tei:note)],''):)
-                  else $nodes/descendant-or-self::tei:title[1]      
+                  else tei2html:tei2html($nodes/descendant-or-self::tei:title[1])
     let $series := for $a in distinct-values($nodes/descendant::tei:seriesStmt/tei:biblScope/tei:title)
                    return tei2html:translate-series($a)
     return 
