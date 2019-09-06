@@ -76,10 +76,6 @@ declare function tei2html:tei2html($nodes as node()*) as item()* {
                     <span class="tei-title {$titleType}">{
                         (if($node/@xml:lang) then attribute lang { $node/@xml:lang } else (),
                             tei2html:tei2html($node/node())
-                            (:
-                            if($nodes/descendant-or-self::tei:title[@type='sub']//text() != '') then 
-                                (': ', tei2html:tei2html($nodes/descendant-or-self::tei:title[@type='sub']))
-                            else ()    :) 
                         )                 
                     }</span>
             case element(tei:foreign) return 
@@ -112,8 +108,11 @@ declare function tei2html:summary-view($nodes as node()*, $lang as xs:string?, $
 (: Generic short view template :)
 declare function tei2html:summary-view-generic($nodes as node()*, $id as xs:string?) as item()* {
     let $title := if($nodes/descendant-or-self::tei:title[@type='main']) then 
-                        tei2html:tei2html($nodes/descendant-or-self::tei:title[@type='main'])
-                    (:$nodes/descendant-or-self::tei:title[@type='sub']//text()[not(parent::tei:note)],''):)
+                        (tei2html:tei2html($nodes/descendant-or-self::tei:title[@type='main']),
+                         if($nodes/descendant-or-self::tei:title[@type='sub']//text() != '') then 
+                             (': ', tei2html:tei2html($nodes/descendant-or-self::tei:title[@type='sub']))
+                         else ()    
+                        )
                   else tei2html:tei2html($nodes/descendant-or-self::tei:title[1])
     let $series := for $a in distinct-values($nodes/descendant::tei:seriesStmt/tei:biblScope/tei:title)
                    return tei2html:translate-series($a)
