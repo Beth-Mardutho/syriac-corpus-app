@@ -237,7 +237,7 @@
                 </xsl:for-each>
             </ul>
         </div>
-        <!--
+        
         <xsl:if test="t:respStmt">
             <div>
                 <h4>Additional Credit:</h4>
@@ -252,7 +252,7 @@
                 </ul>
             </div>
         </xsl:if>
-        -->
+        
         <xsl:if test="t:funder and not(empty(t:funder/node()))">
             <div>
                 <h4>Funder:</h4>
