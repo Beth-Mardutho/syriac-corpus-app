@@ -823,7 +823,7 @@ declare function app:display-ids($node as node(), $model as map(*)){
                 for $resp in $model("hits")//tei:titleStmt/descendant::tei:respStmt
                 return (string-join($resp//text(),' '),<br/>)
                 }
-              </div>,
+              </div>
              )}
         </div>
     </div>,
