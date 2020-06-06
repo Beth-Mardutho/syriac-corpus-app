@@ -819,10 +819,10 @@ declare function app:display-ids($node as node(), $model as map(*)){
               </div>,
               <div>
                 <h5>Preparation of Electronic Edition:</h5>
-                <ul>{
+                {
                 for $resp in $model("hits")//tei:titleStmt/descendant::tei:respStmt
-                return <li>{string-join($resp//text(),' ')}</li>
-                }</ul>
+                return (string-join($resp//text(),' '),<br/>)
+                }
               </div>,
              )}
         </div>
