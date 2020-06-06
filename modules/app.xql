@@ -820,7 +820,7 @@ declare function app:display-ids($node as node(), $model as map(*)){
               <div>
                 <h5>Preparation of Electronic Edition:</h5>
                 {
-                for $resp in $model("hits")//tei:titleStmt/descendant::tei:respStmt
+                for $resp in $model("data")//tei:titleStmt/descendant::tei:respStmt
                 return (string-join($resp//text(),' '),<br/>)
                 }
               </div>
