@@ -5,12 +5,49 @@ declare variable $exist:resource external;
 declare variable $exist:controller external;
 declare variable $exist:prefix external;
 declare variable $exist:root external;
+
 (: Get variables for Srophe collections. :)
 declare variable $exist:record-uris  := 
     distinct-values(for $collection in $global:get-config//repo:collection
     let $short-path := replace($collection/@record-URI-pattern,$global:base-uri,'')
-    return $short-path)    
-;
+    return $short-path)      
+; 
+
+(: Send to content negotiation:)
+declare function local:content-negotiation($exist:path, $exist:resource){
+    if(starts-with($exist:resource, ('search','browse'))) then
+        let $format := request:get-parameter('format', '')
+        return 
+        <dispatch xmlns="http://exist.sourceforge.net/NS/exist">        
+            <forward url="{$exist:controller}/modules/content-negotiation/content-negotiation.xql"/>
+            <add-parameter name="format" value="{$format}"/>
+        </dispatch>
+    else
+        let $id := if($exist:resource = ('tei','xml','txt','pdf','json','geojson','kml','jsonld','rdf','ttl','atom')) then
+                        tokenize(replace($exist:path,'/tei|/xml|/txt|/pdf|/json|/geojson|/kml|/jsonld|/rdf|/ttl|/atom',''),'/')[last()]
+                   else replace(xmldb:decode($exist:resource), "^(.*)\..*$", "$1")
+        let $record-uri-root := substring-before($exist:path,$id)
+        let $id := if($global:get-config//repo:collection[ends-with(@record-URI-pattern, $record-uri-root)]) then
+                        concat($global:get-config//repo:collection[ends-with(@record-URI-pattern, $record-uri-root)][1]/@record-URI-pattern,$id)
+                   else $id
+        let $html-path := concat($global:get-config//repo:collection[ends-with(@record-URI-pattern, $record-uri-root)][1]/@app-root,'record.html')
+        let $format := if($exist:resource = ('tei','xml','txt','pdf','json','geojson','kml','jsonld','rdf','ttl','atom')) then
+                            $exist:resource
+                       else if(request:get-parameter('format', '') != '') then request:get-parameter('format', '')                            
+                       else fn:tokenize($exist:resource, '\.')[fn:last()]
+        return 
+            if($global:get-config//repo:collection[ends-with(@record-URI-pattern, $record-uri-root)]) then 
+                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">        
+                    <forward url="{$exist:controller}/modules/content-negotiation/content-negotiation.xql">
+                        <add-parameter name="id" value="{$id}"/>
+                        <add-parameter name="format" value="{$format}"/>
+                    </forward>
+                </dispatch>
+            else 
+                <dispatch xmlns="http://exist.sourceforge.net/NS/exist">        
+                    <forward url="{$exist:root}/{$exist:path}"/>
+                </dispatch>
+};
 
 (: Get variables for Srophe collections. :)
 declare variable $exist:collection-uris  := 
@@ -77,6 +114,14 @@ else if (contains($exist:path,'/volume/')) then
                     <forward url="{$exist:controller}/modules/view.xql"/>
                 </error-handler>
          </dispatch> 
+(: Passes data to content negotiation module:)
+else if(request:get-parameter('format', '') != '' and request:get-parameter('format', '') != 'html') then
+    local:content-negotiation($exist:path, $exist:resource)
+else if(ends-with($exist:path,('/tei','/xml','/txt','/pdf','/json','/geojson','/kml','/jsonld','/rdf','/ttl','/atom'))) then
+    local:content-negotiation($exist:path, $exist:resource)
+else if(ends-with($exist:resource,('.tei','.xml','.txt','.pdf','.json','.geojson','.kml','.jsonld','.rdf','.ttl','.atom'))) then
+    local:content-negotiation($exist:path, $exist:resource)
+
 (: Checks for any record uri patterns as defined in repo.xml :)    
 else if(replace($exist:path, $exist:resource,'') =  ($exist:record-uris) or ends-with($exist:path, ("/atom","/tei","/rdf","/txt","/ttl",'.tei','.atom','.rdf','.ttl',".txt"))) then
     (: Sends to restxql to handle /atom, /tei,/rdf:)
