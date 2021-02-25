@@ -783,9 +783,11 @@ declare function app:display-body($node as node(), $model as map(*), $paths as x
             return <embed src="https://drive.google.com/viewerng/viewer?embedded=true&amp;url={$url}" width="100%" height="800"/>
         else ()
     return 
-        if($pdf != '') then
-            <div class="col-sm-8 col-md-8 col-lg-9 mssBody">{$data-display,<div class="PDFviewer text-center" style="width:100%;">{$pdf}</div>}</div>
-        else  <div class="col-sm-6 col-md-6 col-lg-7 mssBody">{$data-display}</div>
+        if($model("data")/descendant::tei:body/descendant::*[@n] or (app:toc($model("data")/descendant::tei:body/child::*) != '')) then 
+            <div class="col-sm-6 col-md-6 col-lg-7 mssBody">{$data-display}</div>
+        else 
+            <div class="col-sm-8 col-md-8 col-lg-9 mssBody">
+                {$data-display,<div class="PDFviewer text-center" style="width:100%;">{$pdf}</div>}</div>
 }; 
 
 (: Display ids :)
@@ -816,13 +818,6 @@ declare function app:display-ids($node as node(), $model as map(*)){
               <div style="margin-top:1em;">
                 <span class="h5-inline">Publication Date: </span>
                 {format-date(xs:date($model("data")/descendant::tei:revisionDesc/tei:change[1]/@when), '[MNn] [D], [Y]')}
-              </div>,
-              <div>
-                <h5>Preparation of Electronic Edition:</h5>
-                {
-                for $resp in $model("data")//tei:titleStmt/descendant::tei:respStmt
-                return (string-join($resp//text(),' '),<br/>)
-                }
               </div>
              )}
         </div>
@@ -848,7 +843,8 @@ declare function app:display-left-menu($node as node(), $model as map(*)){
 let $toc := app:toc($model("data")/descendant::tei:body/child::*)
 let $vol := string($model("data")/descendant::tei:sourceDesc/descendant::tei:biblScope[@type="vol"]/@n)
 return 
-    <div class="col-sm-2 col-md-2 noprint" xmlns="http://www.w3.org/1999/xhtml">
+    if($toc != '' or $model("data")/descendant::tei:body/descendant::*[@n]) then 
+        <div class="col-sm-2 col-md-2 noprint" xmlns="http://www.w3.org/1999/xhtml">
             <div class="left-menu">
                 {(
                 <span style="display:block; margin:1em;"><i class="fas fa-book"></i>&#160;<a href="{$global:nav-base}/volume/{$vol}">Volume {$vol} ({string($model("data")/descendant::tei:sourceDesc/descendant::tei:imprint/tei:date)})</a></span>,
@@ -865,7 +861,8 @@ return
                 else ()
                 )}
             </div>
-        </div>  
+        </div>        
+    else <span style="display:block; margin:1em;"><i class="fas fa-book"></i>&#160;<a href="{$global:nav-base}/volume/{$vol}">Volume {$vol} ({string($model("data")/descendant::tei:sourceDesc/descendant::tei:imprint/tei:date)})</a></span>
 }; 
 
 (:~
@@ -894,8 +891,9 @@ return
                     else if($node/parent::*[1]/@xml:id) then 
                         concat('Head-id.',string-join($node/ancestor::*[@xml:id][1]/@xml:id,'.'))                        
                     else ()
+                let $text := string-join(for $t in $node/node() | $node/text() where not($t/self::tei:note) return $t,' ')
                 return 
-                    (<a href="#{$id}" class="toc-item">{string-join($node/descendant-or-self::text(),' ')}</a>, ' ') 
+                    (<a href="#{$id}" class="toc-item">{$text}</a>, ' ') 
             default return ()          
 };
 
