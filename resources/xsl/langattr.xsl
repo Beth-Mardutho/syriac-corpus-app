@@ -6,9 +6,7 @@
                 <xsl:value-of select="@xml:lang"/>
             </xsl:attribute>
             <xsl:if test="contains(@lang, 'syr') or contains(@xml:lang, 'syr') or contains(@lang, 'ar') or @xml:lang = 'ar'">
-                <xsl:attribute name="dir">
-                    <xsl:value-of select="rtl"/>
-                </xsl:attribute>
+                <xsl:attribute name="dir"><xsl:text>rtl</xsl:text></xsl:attribute>
             </xsl:if>
         </xsl:if>
     </xsl:template>
